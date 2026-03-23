@@ -25,6 +25,7 @@ contract AuditTrail {
         string fileId;
         string fileName;
         bytes32 fileHash;
+        string ipfsHash;
         address uploadedBy;
         uint256 uploadTime;
         uint256 fileSize;
@@ -54,7 +55,7 @@ contract AuditTrail {
     event InspectionRejected(string indexed reportId, address indexed approver, string reason);
     
     // File Upload Events
-    event FileUploaded(string indexed fileId, string fileName, address indexed uploadedBy, bytes32 fileHash);
+    event FileUploaded(string indexed fileId, string fileName, address indexed uploadedBy, bytes32 fileHash, string ipfsHash);
     event FileVerified(string indexed fileId, bytes32 providedHash, bool isAuthentic);
     event FileTamperingDetected(string indexed fileId, bytes32 originalHash, bytes32 currentHash);
     
@@ -199,6 +200,7 @@ contract AuditTrail {
         string memory fileId,
         string memory fileName,
         bytes32 fileHash,
+        string memory ipfsHash,
         uint256 fileSize,
         uint32 rowCount,
         uint32 columnCount
@@ -211,6 +213,7 @@ contract AuditTrail {
             fileId: fileId,
             fileName: fileName,
             fileHash: fileHash,
+            ipfsHash: ipfsHash,
             uploadedBy: msg.sender,
             uploadTime: block.timestamp,
             fileSize: fileSize,
@@ -224,7 +227,7 @@ contract AuditTrail {
         // Record initial hash in verification history
         fileVerificationHistory[fileId].push(fileHash);
         
-        emit FileUploaded(fileId, fileName, msg.sender, fileHash);
+        emit FileUploaded(fileId, fileName, msg.sender, fileHash, ipfsHash);
     }
     
     /**

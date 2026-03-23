@@ -1,0 +1,10 @@
+{
+  "name": "frontend-workspace",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "npm --prefix ./audit-trail-system run dev",
+    "build": "npm --prefix ./audit-trail-system run build",
+    "preview": "npm --prefix ./audit-trail-system run preview"
+  }
+}

@@ -33,8 +33,7 @@ export const BlockchainProvider = ({ children }) => {
   // Connect to MetaMask
   const connectWallet = async () => {
     if (!window.ethereum) {
-      alert('Please install MetaMask!');
-      return;
+      return { success: false, message: 'Please install MetaMask.' };
     }
 
     try {
@@ -55,8 +54,10 @@ export const BlockchainProvider = ({ children }) => {
       
       // Check if connected to Hardhat network (chainId 31337)
       if (chainIdNum !== 31337) {
-        alert(`Wrong network!\n\nCurrent Chain ID: ${chainIdNum}\nRequired Chain ID: 31337\n\nPlease manually switch MetaMask to "Hardhat Local" network.`);
-        return;
+        return {
+          success: false,
+          message: `Wrong network. Current Chain ID: ${chainIdNum}. Required Chain ID: 31337. Please switch MetaMask to "Hardhat Local".`,
+        };
       }
 
       // Get signer
@@ -82,13 +83,14 @@ export const BlockchainProvider = ({ children }) => {
       console.log('✅ Connected successfully!');
       console.log('Account:', accounts[0]);
       console.log('Role:', ROLES[Number(userRole)]);
+
+      return { success: true };
     } catch (error) {
       console.error('Error connecting wallet:', error);
       if (error.code === 4001) {
-        alert('Connection rejected by user.');
-      } else {
-        alert('Failed to connect: ' + error.message);
+        return { success: false, message: 'Connection rejected by user.' };
       }
+      return { success: false, message: 'Failed to connect: ' + error.message };
     }
   };
 

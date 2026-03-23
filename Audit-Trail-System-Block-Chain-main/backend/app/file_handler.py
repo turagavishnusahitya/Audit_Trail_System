@@ -208,3 +208,36 @@ def calculate_detailed_hash(file_content: bytes, filename: str) -> Dict:
         
     except Exception as e:
         raise ValueError(f"Failed to calculate hash: {str(e)}")
+
+
+def upload_to_ipfs(file_content: bytes, filename: str) -> dict:
+    """Upload a file to an IPFS node and return metadata.
+
+    Requires environment variables (optional):
+    - IPFS_API_URL (default: https://ipfs.infura.io:5001)
+    - IPFS_PROJECT_ID / IPFS_PROJECT_SECRET (for Infura authentication)
+
+    Returns:
+        dict: { "ipfsHash": str, "ipfsUrl": str }
+    """
+    import os
+    import requests
+
+    ipfs_api_url = os.getenv("IPFS_API_URL", "https://ipfs.infura.io:5001")
+    project_id = os.getenv("IPFS_PROJECT_ID")
+    project_secret = os.getenv("IPFS_PROJECT_SECRET")
+    endpoint = f"{ipfs_api_url.rstrip('/')}/api/v0/add"
+
+    files = {"file": (filename, file_content)}
+    auth = (project_id, project_secret) if project_id and project_secret else None
+
+    response = requests.post(endpoint, files=files, auth=auth)
+    response.raise_for_status()
+
+    data = response.json()
+    ipfs_hash = data.get("Hash")
+    return {
+        "ipfsHash": ipfs_hash,
+        "ipfsUrl": f"https://ipfs.io/ipfs/{ipfs_hash}" if ipfs_hash else None,
+        "raw": data
+    }

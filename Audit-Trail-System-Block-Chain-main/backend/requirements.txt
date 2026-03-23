@@ -8,3 +8,4 @@ openpyxl
 pandas
 python-multipart
 xlrd
+requests

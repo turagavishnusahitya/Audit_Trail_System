@@ -1,0 +1,50 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  font-family: theme('fontFamily.sans');
+  background: linear-gradient(180deg, #f4f6fb 0%, #eef2f7 100%);
+  color: #1f2937;
+  overflow-x: hidden;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+/* Global utility for animated card */
+.card-shadow {
+  @apply bg-white rounded-2xl shadow-soft border border-slate-100;
+}
+
+/* Smooth transitions */
+.transition-default {
+  @apply transition-all duration-200 ease-in-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 420ms ease-out both;
+}
